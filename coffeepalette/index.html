@@ -10,7 +10,8 @@
     <style>
 
       body {
-        padding: 16px 16px 16px 16px;
+        margin: 0;
+        padding: 0;
         font-family: Helvetica, sans-serif
       }
 
@@ -18,174 +19,134 @@
         display: block;
         text-decoration: none;
         padding: 100px;
+        margin-left: 16px;
+        margin-right: 16px;
         margin-bottom: 10px;
       }
 
       h1 {
+        margin-left: 16px;
         font-size: 40px;
       }
 
       h2 {
+        margin-left: 16px;
+        padding-bottom: 16px;
         font-size: 16px;
       }
 
       p {
-      font-size: 40px;
+        margin-left: 16px;
+        font-size: 40px;
       }
 
-      img {
-        max-width: 50%;
-      }
-
-      .sine-wave {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 60px;
-      }
-
-      .sine-wave path {
-        animation: wave-wiggle 2s infinite ease-in-out;
-        transform-origin: center;
-      }
-    
-
-      @keyframes wave-wiggle {
-        0% {
-          transform: scaleX(1) translateY(0);
+      canvas {
+        margin-top: 16px;
+        margin-bottom: 16px;
+        padding: 0;
+            width: 100vw;
+            height: 40px;
+            display: block;
+        
         }
-        50% {
-        transform: scaleX(1.05) translateY(3px);
-        }
-        100% {
-        transform: scaleX(1) translateY(0);
-        }
-      }
-      
+
     </style>
   </head>
   <body>
     <header>
-
-      <canvas id="canvas"></canvas>
-
-<script>
-var canvas = document.getElementById("canvas");
-var context = canvas.getContext("2d");
-
-canvas.width = window.innerWidth;
-canvas.height = 100;
-
-var step = 0;
-var wavelength = 300; // Keep wave length consistent
-var baseSpeed = 2 * Math.PI / wavelength; // Base speed per frame
-
-function draw() {
-  context.clearRect(0, 0, canvas.width, canvas.height);
-
-  context.beginPath();
-  context.lineWidth = 3;
-  context.strokeStyle = "black";
-
-  var amplitude = 20; // Wave height
-  var frequency = (2 * Math.PI) / wavelength; // Keep cycles the same
-  var yOffset = canvas.height / 2;
-  
-  context.moveTo(0, yOffset);
-
-  for (var x = 0; x < canvas.width; x++) {
-    var y = amplitude * Math.sin((x * frequency) + step) + yOffset;
-    context.lineTo(x, y);
-  }
-
-  context.stroke();
-
-  step += baseSpeed * 10; // Adjust speed dynamically for consistent motion
-
-  window.requestAnimationFrame(draw);
-}
-
-// Adjust canvas size and maintain animation consistency
-window.addEventListener("resize", function () {
-  var oldWidth = canvas.width;
-  canvas.width = window.innerWidth;
-  canvas.height = 100;
-
-  // Scale step to match new width so the wave doesn't speed up
-  step *= oldWidth / canvas.width;
-
-  draw();
-});
-
-draw();
-
-</script>
-     
-      
+         
      <h1> Coffee Palette </h1>
-     <h2> By James Swinehart </h2>
      <h2> How to Use </h2>
 
     </header>
-    
-    <div class="palette">
 
+    <div class="wave-container">
+      <canvas id="wave"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.getElementById("wave");
+        const ctx = canvas.getContext("2d");
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = 40;
+        }
+        resizeCanvas();
+        window.addEventListener("resize", resizeCanvas);
+
+        let offset = 0;
+
+        function drawWave() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            ctx.beginPath();
+            ctx.moveTo(0, canvas.height / 2);
+
+            let amplitude = 16; // Wave height
+            let wavelength = 25;
+            let speed = 1.6;
+
+            ctx.lineWidth = 3;
+
+            for (let x = -100; x < canvas.width; x++) {
+                let y = canvas.height / 2 + amplitude * Math.sin((x + offset) / wavelength);
+                ctx.lineTo(x, y);
+            }
+
+            ctx.stroke();
+
+            offset += speed;
+            requestAnimationFrame(drawWave);
+        }
+
+        drawWave();
+    </script>
+
+    <div class="palette">
       <a href="blackcoffee.html" 
       class="colorbox" 
       style="background-color:#191411;">
       </a>
-
       <a href="chocolatelabrador.html" 
       class="colorbox" 
       style="background-color:#2b1911;">
       </a>
-
       <a href="cocoakiss.html" 
       class="colorbox" 
       style="background-color:#5d3127;">
       </a>
-
       <a href="roastedcopper.html" 
       class="colorbox" 
       style="background-color:#813d26;">
       </a>
-
       <a href="creamysunrise.html" 
       class="colorbox" 
       style="background-color:#c9773e;">
       </a>
-
       <a href="warmlatte.html" 
       class="colorbox" 
       style="background-color:#D9995F;">
       </a>
-
       <a href="buttermilkpancake.html" 
       class="colorbox light" 
       style="background-color:#e7b57a;">
       </a>
-
       <a href="goldenretriever.html" 
       class="colorbox" 
       style="background-color:#f0d0a9;">
       </a>
-
       <a href="sardiniansand.html" 
       class="colorbox" 
       style="background-color:#F3DDC2;">
       </a>
-
       <a href="clottedcream.html" 
       class="colorbox" 
       style="background-color:#F5E7D6;">
       </a>
-
       <a href="wholemilk.html" 
       class="colorbox" 
       style="background-color:#f5ece1;">
       </a>
-
   </div>
 
   </body>
