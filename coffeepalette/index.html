@@ -18,10 +18,15 @@
       .colorbox {
         display: block;
         text-decoration: none;
-        padding: 100px;
-        margin-left: 10px;
-        margin-right: 10px;
+        transition: transform .2s;
+        padding: 67px;
+        margin-left: 16px;
+        margin-right: 16px;
         margin-bottom: 10px;
+      }
+
+      .colorbox:hover {
+        transform: scale(1.006);
       }
 
       h1 {
@@ -94,7 +99,7 @@
             ctx.lineWidth = 3;
 
             for (let x = -100; x < canvas.width; x++) {
-                let y = canvas.height / 2 + amplitude * Math.sin((x + offset) / wavelength);
+                let y = canvas.height / 2 + amplitude * Math.sin((-x + offset) / wavelength);
                 ctx.lineTo(x, y);
             }
 
