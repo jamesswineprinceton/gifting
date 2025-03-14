@@ -1,32 +1,16 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
     <title>Coffee Palette</title>
-    <link rel="icon" type="image/x-icon" href="finalcoffee.svg">
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, 
-    user-scalable=no" />
+    <link rel="icon" type="image/x-icon" href="finalcoffee.svg" />
     <style>
 
       body {
         margin: 0;
         padding: 0;
-        font-family: Helvetica, sans-serif
-      }
-
-      .colorbox {
-        display: block;
-        text-decoration: none;
-        transition: transform .2s;
-        padding: 67px;
-        margin-left: 16px;
-        margin-right: 16px;
-        margin-bottom: 10px;
-      }
-
-      .colorbox:hover {
-        transform: scale(1.006);
+        font-family: Helvetica, sans-serif;
       }
 
       h1 {
@@ -34,25 +18,97 @@
         font-size: 40px;
       }
 
-      h2 {
-        margin-left: 16px;
-        font-size: 16px;
-      }
-
       p {
         margin-left: 16px;
         font-size: 40px;
+      }
+
+      .colorbox {
+        display: block;
+        text-decoration: none;
+        transition: transform 0.2s;
+        padding: 67px;
+        margin-left: 16px;
+        margin-right: 16px;
+        margin-bottom: 10px;
+        position: relative;
+      }
+
+      .colorbox:hover {
+        transform: scale(1.006);
+      }
+
+      .colorbox span {
+        position: absolute;
+        left: 16px;
+        transform: translateY(-50%);
+        font-size: 20px;
+        opacity: 0;
+        transition: opacity 0.2s ease-in-out;
+      }
+
+      .colorbox .color-name {
+        position: absolute;
+        top: 26px;
+        left: 16px;
+        font-size: 25px;
+        font-weight: bold;
+        opacity: 0;
+        transition: opacity 0.2s ease-in-out;
+      }
+
+      .colorbox .hex-code {
+        position: absolute;
+        bottom: 6px;
+        left: 16px;
+        font-size: 16px;
+        opacity: 0;
+        transition: opacity 0.2s ease-in-out;
+      }
+
+      .colorbox:hover .color-name,
+      .colorbox:hover .hex-code {
+        opacity: 1;
+      }
+      .colorbox.dark span {
+        color: white;
+      }
+      .colorbox.light span {
+        color: black;
+      }
+
+      h2 {
+      position: relative;
+      margin-left: 16px;
+      font-size: 16px;
+      display: inline-block;
+      cursor:pointer;
+      } 
+
+      h2::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -2px;
+      width: 0%;
+      height: 3px;
+      background-color: black;
+      transition: width 0.2s ease-in-out;
+      }
+
+      h2:hover::after,
+      h2.active::after {
+        width: 100%;
       }
 
       canvas {
         margin-top: 40px;
         margin-bottom: 10px;
         padding: 0;
-            width: 100vw;
-            height: 40px;
-            display: block;
-        
-        }
+        width: 100vw;
+        height: 40px;
+        display: block;
+      }
 
       footer {
         margin-top: 25px;
@@ -60,14 +116,47 @@
         text-align: center;
       }
 
+      #how-to-use {
+        width: 100%;
+        padding: 0 16px;
+        box-sizing: border-box;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.2s ease-in-out, padding 0.2s ease-in-out;
+      }
+
+      #how-to-use.expanded {
+        max-height: 200px;
+        padding: 16px;
+      }
+
+      #how-to-use p {
+        font-size: 16px;
+        margin:0;
+      }
+
+      .expanded {
+        display: block;
+      }
+
+      footer h2 a {
+        text-decoration: none;
+        color: black;
+      }
+
     </style>
   </head>
   <body>
     <header>
-         
-     <h1> Coffee Palette </h1>
-     <h2> How to Use </h2>
-
+      <h1>Coffee Palette</h1>
+      <h2>How to Use</h2>
+      <div id="how-to-use">
+        <p>Welcome to Coffee Palette, a project inspired by that feeling
+          when you know your coffee is going to be good (or bad) by the
+          color of your coffee-to-milk ratio. <br><br>
+          Check out these usage suggestions for the Palette: 
+        </p>
+      </div>
     </header>
 
     <div class="wave-container">
@@ -75,96 +164,112 @@
     </div>
 
     <script>
-        const canvas = document.getElementById("wave");
-        const ctx = canvas.getContext("2d");
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = 40;
+      document.addEventListener("DOMContentLoaded", function() {
+        const howToUse = document.querySelector("h2");
+        const howToUseContent = document.getElementById("how-to-use");
+
+        howToUse.addEventListener("click", function() {
+          if (howToUseContent.classList.contains("expanded")) {
+            howToUseContent.classList.remove("expanded");
+            howToUse.classList.remove("active"); // Remove underline when closed
+          } else {
+            howToUseContent.classList.add("expanded");
+            howToUse.classList.add("active"); // Keep underline when open
+          }
+        });
+      });
+
+      const canvas = document.getElementById('wave');
+      const ctx = canvas.getContext('2d');
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = 40;
+      }
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas);
+
+      let offset = 0;
+
+      function drawWave() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        ctx.beginPath();
+        ctx.moveTo(0, canvas.height / 2);
+
+        let amplitude = 16;
+        let wavelength = 25;
+        let speed = 1.6;
+
+        ctx.lineWidth = 3;
+
+        for (let x = -100; x < canvas.width; x++) {
+          let y = canvas.height / 2 + amplitude * Math.sin((-x + offset) / wavelength);
+          ctx.lineTo(x, y);
         }
-        resizeCanvas();
-        window.addEventListener("resize", resizeCanvas);
 
-        let offset = 0;
+        ctx.stroke();
 
-        function drawWave() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        offset += speed;
+        requestAnimationFrame(drawWave);
+      }
 
-            ctx.beginPath();
-            ctx.moveTo(0, canvas.height / 2);
-
-            let amplitude = 16; // Wave height
-            let wavelength = 25;
-            let speed = 1.6;
-
-            ctx.lineWidth = 3;
-
-            for (let x = -100; x < canvas.width; x++) {
-                let y = canvas.height / 2 + amplitude * Math.sin((-x + offset) / wavelength);
-                ctx.lineTo(x, y);
-            }
-
-            ctx.stroke();
-
-            offset += speed;
-            requestAnimationFrame(drawWave);
-        }
-
-        drawWave();
+      drawWave();
     </script>
 
     <div class="palette">
-      <a href="blackcoffee.html" 
-      class="colorbox" 
-      style="background-color:#191411;">
+      <a href="blackcoffee.html" class="colorbox dark" style="background-color:#191411;">
+        <span class="color-name">Black Coffee</span>
+        <span class="hex-code">#191411</span>
       </a>
-      <a href="chocolatelabrador.html" 
-      class="colorbox" 
-      style="background-color:#2b1911;">
+      <a href="chocolatelabrador.html" class="colorbox dark" style="background-color:#2b1911;">
+        <span class="color-name">Chocolate Labrador</span>
+        <span class="hex-code">#2B1911</span>
       </a>
-      <a href="cocoakiss.html" 
-      class="colorbox" 
-      style="background-color:#5d3127;">
+      <a href="cocoakiss.html" class="colorbox dark" style="background-color:#5d3127;">
+        <span class="color-name">Cocoa Kiss</span>
+        <span class="hex-code">#5D3127</span>
       </a>
-      <a href="roastedcopper.html" 
-      class="colorbox" 
-      style="background-color:#813d26;">
+      <a href="roastedcopper.html" class="colorbox dark" style="background-color:#813d26;">
+        <span class="color-name">Roasted Copper</span>
+        <span class="hex-code">#813D26</span>
       </a>
-      <a href="creamysunrise.html" 
-      class="colorbox" 
-      style="background-color:#c9773e;">
+      <a href="creamysunrise.html" class="colorbox dark" style="background-color:#c9773e;">
+        <span class="color-name">Creamy Sunrise</span>
+        <span class="hex-code">#C9773E</span>
       </a>
-      <a href="warmlatte.html" 
-      class="colorbox" 
-      style="background-color:#D9995F;">
+      <a href="warmlatte.html" class="colorbox dark" style="background-color:#D9995F;">
+        <span class="color-name">Warm Latte</span>
+        <span class="hex-code">#D9995F</span>
       </a>
-      <a href="buttermilkpancake.html" 
-      class="colorbox light" 
-      style="background-color:#e7b57a;">
+      <a href="buttermilkpancake.html" class="colorbox light" style="background-color:#e7b57a;">
+        <span class="color-name">Buttermilk Pancake</span>
+        <span class="hex-code">#E7B57A</span>
       </a>
-      <a href="goldenretriever.html" 
-      class="colorbox" 
-      style="background-color:#f0d0a9;">
+      <a href="goldenretriever.html" class="colorbox light" style="background-color:#f0d0a9;">
+        <span class="color-name">Golden Retriever</span>
+        <span class="hex-code">#F0D0A9</span>
       </a>
-      <a href="sardiniansand.html" 
-      class="colorbox" 
-      style="background-color:#F3DDC2;">
+      <a href="sardiniansand.html" class="colorbox light" style="background-color:#F3DDC2;">
+        <span class="color-name">Sardinian Sand</span>
+        <span class="hex-code">#F3DDC2</span>
       </a>
-      <a href="clottedcream.html" 
-      class="colorbox" 
-      style="background-color:#F5E7D6;">
+      <a href="clottedcream.html" class="colorbox light" style="background-color:#F5E7D6;">
+        <span class="color-name">Clotted Cream</span>
+        <span class="hex-code">#F5E7D6</span>
       </a>
-      <a href="wholemilk.html" 
-      class="colorbox" 
-      style="background-color:#f5ece1;">
+      <a href="wholemilk.html" class="colorbox light" style="background-color:#f5ece1;">
+        <span class="color-name">Whole Milk</span>
+        <span class="hex-code">#F5ECE1</span>
       </a>
-  </div>
+    </div>
 
-<hr style="width: 100%; height: 3px; border: none; background-color: black; margin: 0;">
+    <hr style="width: 100%; height: 3px; border: none; background-color: black; margin: 0;" />
 
-
-  <footer>
-    <h2>By James Swinehart</h2>
-  </footer>
-
+    <footer>
+      <h2>
+        <a href="https://jamesswineprinceton.github.io/gifting/" 
+        target="_blank">By James Swinehart</a>
+      </h2>
+    </footer>
   </body>
 </html>
