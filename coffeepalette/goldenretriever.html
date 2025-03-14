@@ -24,8 +24,27 @@
         font-size: 25px;
       }
 
-      h3{
+      h3 {
+        position: relative;
         font-size: 16px;
+        display: inline-block;
+        cursor:pointer;
+      }
+
+      h3::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -2px;
+      width: 0%;
+      height: 3px;
+      background-color: black;
+      transition: width 0.2s ease-in-out;
+      }
+
+      h3:hover::after,
+      h3.active::after {
+        width: 100%;
       }
 
       p {
@@ -44,6 +63,10 @@
         You can officially say that you drink coffee. </p>
 
     </header>
+
+    <div class="bottomleft">
+      <h3><a href="index.html" style="text-decoration: none; color: inherit;">Back to Palette</a></h3>
+    </div>
 
   </div>
 

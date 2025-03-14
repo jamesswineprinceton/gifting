@@ -24,8 +24,27 @@
         font-size: 25px;
       }
 
-      h3{
+      h3 {
+        position: relative;
         font-size: 16px;
+        display: inline-block;
+        cursor:pointer;
+      }
+
+      h3::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -2px;
+      width: 0%;
+      height: 3px;
+      background-color: white;
+      transition: width 0.2s ease-in-out;
+      }
+
+      h3:hover::after,
+      h3.active::after {
+        width: 100%;
       }
 
       p {
@@ -41,10 +60,14 @@
       <h2> #F3DDC2 </h2>
       <h2> R =  </h2>
       <p> You are strong. Powerful! Studies say you might also be
-        psychopathic. But at least your coffee looks cool!
+        psychopathic. But at least your coffee looks aesthetically pleasing!
       </p>
 
     </header>
+
+    <div class="bottomleft">
+      <h3><a href="index.html" style="text-decoration: none; color: inherit;">Back to Palette</a></h3>
+    </div>
 
   </div>
 
