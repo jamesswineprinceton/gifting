@@ -7,6 +7,34 @@
     <link rel="icon" type="image/x-icon" href="finalcoffee.svg" />
     <style>
 
+      .suggestions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+      }
+
+      .suggestion {
+        width: 300px;
+        height: 500px;
+      }
+
+      .suggestion-image {
+        background-size: cover;
+        height: 300px;
+      }
+
+      .suggestion-1 {
+        background-image: url(1explore.png);
+      }
+
+      .suggestion-2 {
+        background-image: url(2create.png);
+      }
+
+      .suggestion-3 {
+        background-image: url(3order.png);
+      }
+
       body {
         margin: 0;
         padding: 0;
@@ -19,7 +47,6 @@
       }
 
       p {
-        margin-left: 16px;
         font-size: 40px;
       }
 
@@ -126,13 +153,13 @@
       }
 
       #how-to-use.expanded {
-        max-height: 200px;
+        max-height: 2240px;
         padding: 16px;
       }
 
       #how-to-use p {
         font-size: 16px;
-        margin:0;
+        line-height: 1.6em;
       }
 
       .expanded {
@@ -150,19 +177,44 @@
     <header>
       <h1>Coffee Palette</h1>
       <h2>How to Use</h2>
-      <div id="how-to-use">
-        <p>Welcome to Coffee Palette, a project inspired by that feeling
-          when you can tell your coffee is going to be good (or bad) by the
-          color of your coffee-to-milk ratio. <br><br>
+      <div id="how-to-use" style="display: block; width: 100%;">
+        <p style="font-weight: bold;">Welcome to Coffee Palette, a project inspired by that feeling
+          when you can tell your coffee is going to be good (or bad) by 
+          the color of your coffee-to-milk ratio. <br><br>
           Check out these usage suggestions for the Palette:
         </p>
-      </div>
-    </header>
+
+        <div class="suggestions">
+          <div class="suggestion">
+            <div class="suggestion-image suggestion-1"></div>
+            <p>Discover the different colors of the Palette. Find your
+              favorite. Read each color's blurb to see what your
+              coffee color says about you. Inspired? Use the HEX and RGB 
+              values to use the color anywhere you'd like!
+            </p>
+          </div>
+          <div class="suggestion">
+            <div class="suggestion-image suggestion-2"></div>
+            <p>Line up your cup next to a computer displaying your
+              favorite coffee color when you're making your coffee,
+              and use Coffee Palette to have the perfect coffee-to-milk
+              ratio every morning!
+            </p>
+          </div>
+          <div class="suggestion">
+            <div class="suggestion-image suggestion-3"></div>
+            <p>Stroll into your favorite coffee shop with confidence,
+              using Coffee Palette on your mobile device as a guide
+              for your barista to nail your favorite coffee color every
+              time. Never suffer from that feeling of wasting money on
+              the wrong coffee-to-milk ratio again!</p>
+          </div>
+        </div>
+    </div>
 
     <div class="wave-container">
       <canvas id="wave"></canvas>
     </div>
-
     <script>
       document.addEventListener("DOMContentLoaded", function() {
         const howToUse = document.querySelector("h2");
@@ -171,10 +223,10 @@
         howToUse.addEventListener("click", function() {
           if (howToUseContent.classList.contains("expanded")) {
             howToUseContent.classList.remove("expanded");
-            howToUse.classList.remove("active"); // Remove underline when closed
+            howToUse.classList.remove("active");
           } else {
             howToUseContent.classList.add("expanded");
-            howToUse.classList.add("active"); // Keep underline when open
+            howToUse.classList.add("active");
           }
         });
       });
@@ -215,6 +267,7 @@
 
       drawWave();
     </script>
+    </header>
 
     <div class="palette">
       <a href="blackcoffee.html" class="colorbox dark" style="background-color:#191411;">
