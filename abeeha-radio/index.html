@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Abeeha Radio</title>
+  <style>
+    body {
+      background-color: #014421;
+      color: white;
+      font-family: 'helvetica', sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      gap: 40px;
+      transition: background-color 0.5s ease;
+    }
+
+    input {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+
+    button {
+      padding: 10px 16px;
+      margin-top: 16px;
+      border: none;
+      border-radius: 6px;
+      background-color: #ffffff;
+      color: #014421;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 16px;
+      transition: transform 0.2s ease;
+    }
+
+    button:hover {
+      transform: scale(1.06);
+    }
+
+    #mainContent {
+      display: none;
+      text-align: center;
+    }
+
+    h1 {
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+
+    .passwordPrompt { animation: fadeIn .6s; }
+
+
+    .mainContent { animation: fadeIn .6s; }
+
+    .fadeOut {
+      animation: fadeOut .6s forwards;
+    }
+
+    @keyframes fadeIn {
+        0% { opacity: 0; }
+        100% { opacity: 1; }
+    }
+
+    @keyframes fadeOut {
+        0% { opacity: 1; }
+        100% { opacity: 0; }
+    }
+
+    @keyframes fadeInOverlay {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes fadeOutOverlay {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+
+    .overlay.fade-in {
+      animation: fadeInOverlay 0.6s ease forwards;
+    }
+
+    .overlay.fade-out {
+      animation: fadeOutOverlay 0.6s ease forwards;
+    }
+
+    #deskContainer {
+  position: relative;
+  display: inline-block;
+}
+
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(1, 68, 33, 0.9);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+.overlay-content {
+  background: white;
+  color: #014421;
+  padding: 30px;
+  border-radius: 10px;
+  max-width: 400px;
+  text-align: center;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #014421;
+  cursor: pointer;
+}
+
+.playlist-scroll {
+  max-height: 400px;
+  overflow-y: auto;
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+}
+
+.library-button {
+  background: #014421;
+  color: white;
+  padding: 10px 14px;
+  margin: 8px 10px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  width: calc(100% - 20px);
+  text-align: left;
+  box-sizing: border-box;
+}
+ 
+  </style>
+</head>
+<body>
+
+  <div id="passwordPrompt" class="passwordPrompt">
+    <h1>Abeeha Radio</h1>
+    <input type="password" id="passwordInput" placeholder="Password">
+    <br>
+    <button onclick="checkPassword()">Submit</button>
+  </div>
+
+  <div id="mainContent" class="mainContent">
+    <h1>Welcome, Abeeha</h1>
+    <br>
+    <br>
+    <br>
+    <img src="abeeha-desk-final.png" usemap="#image-map" width="900" height="506" style="margin-left: 25px;">
+
+    <map name="image-map">
+      <area alt="recordPlayer" coords="148,51,412,236" shape="rect" href="#" onclick="showOverlay('nowPlayingOverlay'); return false;">
+      <area alt="playlists" coords="54,397,708,238" shape="rect" href="#" onclick="showOverlay('playlistOverlay'); return false;">
+    </map>
+
+    <div id="nowPlayingOverlay" class="overlay">
+      <div class="overlay-content">
+        <span class="close" onclick="hideOverlay('nowPlayingOverlay')">&times;</span>
+        <h2>Now Playing</h2>
+        <img src="record.gif" style="width: 200px; display: block; margin: 0 auto;">
+        <p id="trackTitle" style="margin-top: 10px;"></p>
+        <iframe
+          id="nowPlayingEmbed"
+          src="https://open.spotify.com/embed/playlist/3YqSQbnqApqCOJULRVe7nA?utm_source=generator"
+          width="100%" height="152" frameBorder="0"
+          allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          loading="lazy"></iframe>
+      </div>
+    </div>
+
+    <div id="playlistOverlay" class="overlay">
+        <div class="overlay-content">
+          <span class="close" onclick="hideOverlay('playlistOverlay')">&times;</span>
+          <h2>Playlists</h2>
+          <div class="playlist-scroll">
+            <button class="library-button" onclick="setNowPlayingPlaylist('Breakfast Hits', '3YqSQbnqApqCOJULRVe7nA')">Breakfast Hits</button>
+            <button class="library-button" onclick="setNowPlayingPlaylist('Reading a Fantasy Book', '5gUs8rx2EnPx6JX3HiJWHT')">Reading a Fantasy Book</button>
+            <button class="library-button" onclick="setNowPlayingPlaylist('Best of Coke Studio', '37i9dQZF1DXbck8sFsEQGj')">Best of Coke Studio</button>
+            <button class="library-button" onclick="setNowPlayingPlaylist('Wintertime', '2wVWxho0ZuTcUIDInq9NJh')">Wintertime</button>
+            <button class="library-button" onclick="setNowPlayingPlaylist('Senior Year of High School', '4AVeN5cRIdkcbVIaKzQZTg')">Senior Year of High School</button>
+            <button class="library-button" onclick="setNowPlayingPlaylist('Throwing a Javelin', '7uHNuBeYvtm3mQFtLYSjep')">Throwing a Javelin</button>
+          </div>
+        </div>
+      </div>
+  </div>
+  
+  <script>
+    function checkPassword() {
+      const password = document.getElementById("passwordInput").value;
+      const prompt = document.getElementById("passwordPrompt");
+      const content = document.getElementById("mainContent");
+
+      if (password === "breakfast") {
+        prompt.classList.add("fadeOut");
+        setTimeout(() => {
+          prompt.style.display = "none";
+          content.style.display = "block";
+        }, 1000);
+      } else {
+        alert("Incorrect Password. Try again?");
+      }
+    }
+
+    function showOverlay(id) {
+      const el = document.getElementById(id);
+      el.classList.remove('fade-out');
+      el.style.display = 'flex';
+      void el.offsetWidth; // trigger reflow
+      el.classList.add('fade-in');
+    }
+
+    function hideOverlay(id) {
+      const el = document.getElementById(id);
+      el.classList.remove('fade-in');
+      el.classList.add('fade-out');
+      setTimeout(() => {
+        el.style.display = 'none';
+      }, 400);
+    }
+
+    function setNowPlayingPlaylist(title, playlistId) {
+      hideOverlay('playlistOverlay');
+      document.getElementById('trackTitle').innerText = title;
+      document.getElementById('nowPlayingEmbed').src =
+        `https://open.spotify.com/embed/playlist/${playlistId}?utm_source=generator`;
+      showOverlay('nowPlayingOverlay');
+    }
+  </script>
+
+</body>
+</html>
