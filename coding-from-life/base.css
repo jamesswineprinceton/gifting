@@ -1,0 +1,110 @@
+* {
+	box-sizing: border-box;
+}
+
+body {
+	background: black;
+	margin: 0;
+}
+
+.canvas {
+	max-width: 900px;
+	height: 550px;
+	margin: 100px auto;
+	background: 
+	rgb(235, 226, 203);
+	position: relative;
+}
+
+.blanket {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 50%;
+	background: rgb(240, 51, 51);
+}
+
+.apple {
+	width: 100px;
+	height: 100px;
+	background: rgb(158, 49, 49);
+	border-radius: 50% 50% 45% 45%;
+	position: absolute;
+	top: -140px;
+	left: 600px;
+	margin: 100px auto;
+}
+
+.stem {
+	width: 6px;
+	height: 16px;
+	background: rgb(107, 53, 11);
+	position: absolute;
+	top: -6px;
+	left: 45px;
+	border-radius: 5px;
+}
+
+.vase {
+	width: 160px;
+	height: 220px;
+	background: linear-gradient(to bottom, rgba(255,255,255,0.7), rgba(255,255,255,0.3));
+	border-radius: 50% / 10%;
+	backdrop-filter: blur(3px);
+	box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+	position: absolute;
+	bottom: 160px;
+	left: 460px;
+	z-index: 0;
+}
+
+.oval {
+	width: 160px;
+	background-color: aqua;
+}
+
+.oval.top {
+	top: 2px;
+	background: rgba(235, 226, 203, 0.3);
+}
+
+.oval {
+	width: 98%;
+	height: 43px;
+	background: rgba(255, 255, 255, 0.3);
+	border-radius: 50%;
+	position: absolute;
+	left: 1px;
+}
+
+.oval.bottom {
+	bottom: 2px;
+	box-shadow: inset 0 -2px 4px rgba(255, 255, 255, 0.2);
+}
+
+.flowers {
+	position: absolute;
+	top: -60px;
+	width: 100%;
+	height: 60px;
+}
+
+.flower {
+	position: absolute;
+	width: 7px;
+	height: 280px;
+	z-index: 1;
+	background: rgb(114, 182, 97);
+}
+
+.flower::before {
+	content: '';
+	position: absolute;
+	bottom: 100%;
+	left: -28px;
+	width: 60px;
+	height: 28px;
+	background: rgb(249, 220, 133);
+	border-radius: 50%;
+}
